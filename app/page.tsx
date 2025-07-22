@@ -6,10 +6,24 @@ import VersaLogo, { VersaWordmark } from "./components/VersaLogo";
 
 export default function Home() {
   const [demoInput, setDemoInput] = useState(
-    "The party of the first part shall be entitled to all benefits and subject to all obligations set forth in Schedule A attached hereto and incorporated herein by reference."
+    "The party of the first part shall be entitled to all benefits and subject to all obligations set forth in Schedule A attached hereto and incorporated herein."
   );
+  
   const [activeTab, setActiveTab] = useState("summary");
   const [typewriterText, setTypewriterText] = useState("");
+  const [scrolled, setScrolled] = useState(false);
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 20;
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [scrolled]);
 
   const demoOutputs = {
     summary: "One party gets the benefits and responsibilities listed in Schedule A.",
@@ -23,7 +37,6 @@ export default function Home() {
 }`
   };
 
-  // Typewriter effect for demo output
   useEffect(() => {
     const currentOutput = demoOutputs[activeTab as keyof typeof demoOutputs];
     let i = 0;
@@ -39,13 +52,12 @@ export default function Home() {
     return () => clearInterval(timer);
   }, [activeTab]);
 
-  // Subtle floating sparkles component with reduced density and brightness
   const FloatingSparkles = () => (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(12)].map((_, i) => { // Reduced from 20 to 12 sparkles
+      {[...Array(12)].map((_, i) => {
         const isCyan = Math.random() > 0.5;
         const color = isCyan ? "#00FFE0" : "#b8a1ff";
-        const shadowColor = isCyan ? "rgba(0, 255, 224, 0.4)" : "rgba(184, 161, 255, 0.4)"; // Reduced opacity from 0.8 to 0.4
+        const shadowColor = isCyan ? "rgba(0, 255, 224, 0.4)" : "rgba(184, 161, 255, 0.4)";
         
         // Create more complex movement paths
         const randomPath = Math.floor(Math.random() * 4);
@@ -261,10 +273,10 @@ export default function Home() {
           <div className="flex justify-between items-center">
             <VersaLogo size="md" />
             <div className="flex items-center gap-3 sm:gap-6">
-              <button className="hidden sm:block text-sm text-[#0f0f0f]/80 hover:text-[#0f0f0f] transition-colors font-medium">
+              <button className="hidden sm:block text-sm text-[#0f0f0f]/80 hover:text-[#0f0f0f] transition-all font-medium cursor-pointer hover:scale-105">
                 About
               </button>
-              <button className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[#00ffe0] text-[#0f0f0f] text-xs sm:text-sm font-medium rounded-md hover:bg-[#00ffe0]/90 transition-colors shadow-[0_0_15px_rgba(0,255,224,0.25)]">
+              <button className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[#00ffe0] text-[#0f0f0f] text-xs sm:text-sm font-medium rounded-md hover:bg-[#00ffe0]/90 transition-all shadow-[0_0_15px_rgba(0,255,224,0.25)] cursor-pointer hover:scale-105 hover:shadow-[0_0_20px_rgba(0,255,224,0.35)]">
                 Launch
               </button>
             </div>
@@ -275,9 +287,7 @@ export default function Home() {
       {/* Hero Section - Full Screen */}
       <section className="relative min-h-[90vh] sm:min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-20">
         <FloatingSparkles />
-        
-        {/* No glassmorphism in hero section - removed */}
-        
+                
         {/* Adding floating animated elements for this specific section that work with the fixed background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {/* Light sparkle elements */}
@@ -401,12 +411,14 @@ export default function Home() {
             transition={{ duration: 1, delay: 2.4 }}
           >
             <motion.button
-              className="px-6 sm:px-10 py-3 sm:py-5 bg-transparent border border-[#00ffe0]/70 text-[#0f0f0f] font-medium text-base sm:text-lg rounded-lg transition-all duration-500"
+              className="px-6 sm:px-10 py-3 sm:py-5 bg-transparent border border-[#00ffe0]/70 text-[#0f0f0f] font-medium text-base sm:text-lg rounded-lg transition-all duration-500 cursor-pointer"
               whileHover={{ 
                 boxShadow: "0 0 30px rgba(0, 255, 224, 0.15)",
-                borderColor: "rgba(0, 255, 224, 0.8)"
+                borderColor: "rgba(0, 255, 224, 0.8)",
+                scale: 1.02
               }}
               whileTap={{ scale: 0.98 }}
+              onClick={() => window.location.href = '/auth/signup?callbackUrl=/dashboard'}
             >
               Launch Playground
             </motion.button>
@@ -467,13 +479,14 @@ export default function Home() {
           ].map((mode, index) => (
             <motion.div
               key={index}
-              className={`bg-white/75 backdrop-blur-lg rounded-lg p-8 border-l-4 ${mode.accent} hover:shadow-lg transition-all duration-500 shadow-md`}
+              className={`bg-white/75 backdrop-blur-lg rounded-lg p-8 border-l-4 ${mode.accent} hover:shadow-lg transition-all duration-500 shadow-md cursor-pointer`}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: mode.delay }}
               whileHover={{ 
                 x: 4,
+                y: -4,
                 backgroundColor: "rgba(255, 255, 255, 0.8)",
                 backdropFilter: "blur(16px)",
                 boxShadow: "0 10px 30px -10px rgba(0,0,0,0.1)"
@@ -558,13 +571,13 @@ export default function Home() {
                     <button
                       key={tab.key}
                       onClick={() => setActiveTab(tab.key)}
-                      className={`transition-all relative ${
+                      className={`transition-all relative cursor-pointer ${
                         activeTab === tab.key
                           ? "text-[#0f0f0f] font-bold"
                           : "text-[#0f0f0f]/60 hover:text-[#0f0f0f]/90"
                       }`}
                     >
-                      <span className="text-sm font-playfair">{tab.label}</span>
+                      <span className="text-sm font-playfair hover:scale-105 transition-transform inline-block">{tab.label}</span>
                       {activeTab === tab.key && (
                         <motion.div 
                           className="absolute -bottom-2 left-0 right-0 h-0.5 bg-gradient-to-r from-[#00ffe0] to-[#b8a1ff]"
@@ -789,12 +802,14 @@ export default function Home() {
                 transition={{ duration: 1, delay: 1.5 }}
               >
                 <motion.button
-                  className="px-8 sm:px-12 py-4 sm:py-5 bg-gradient-to-r from-[#00ffe0]/80 to-[#b8a1ff]/80 text-[#0f0f0f] font-bold text-base sm:text-lg rounded-md transition-all duration-300 backdrop-blur-sm shadow-lg border border-white/20"
+                  className="px-8 sm:px-12 py-4 sm:py-5 bg-gradient-to-r from-[#00ffe0]/80 to-[#b8a1ff]/80 text-[#0f0f0f] font-bold text-base sm:text-lg rounded-md transition-all duration-300 backdrop-blur-sm shadow-lg border border-white/20 cursor-pointer"
                   whileHover={{ 
                     boxShadow: "0 0 30px rgba(0, 255, 224, 0.3), 0 0 60px rgba(184, 161, 255, 0.2)",
-                    scale: 1.03
+                    scale: 1.03,
+                    y: -2
                   }}
-                  whileTap={{ scale: 0.98 }}
+                  whileTap={{ scale: 0.98, y: 0 }}
+                  onClick={() => window.location.href = '/auth/signup?callbackUrl=/dashboard'}
                 >
                   Launch Playground
                 </motion.button>
