@@ -122,15 +122,11 @@ export default function Home() {
 
   return (
     <div className="min-h-screen font-geist relative">
-      {/* Premium elegant background with subtle radial gradient - fixed position */}
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[#fdfdfd] via-[#f3f3f3]/70 to-[#eaeaea] pointer-events-none z-[-3]"></div>
       
-      {/* Conic gradient overlay with enhanced colors - fixed position */}
       <div className="fixed inset-0 bg-[conic-gradient(at_top_right,_#fdfdfd,_#d7fffb/15,_#b8a1ff/8,_#f3f3f3,_#fdfdfd)] opacity-60 pointer-events-none z-[-2]"></div>
       
-      {/* Subtle glowing sparkle dots with reduced brightness and density */}
       <div className="fixed inset-0 pointer-events-none z-[-2] overflow-hidden">
-        {/* This creates a field of subtle glowing sparkles that stay fixed while scrolling */}
         <motion.div 
           className="fixed top-[10vh] right-[20vw] w-2 h-2 rounded-full bg-white shadow-[0_0_8px_rgba(0,255,224,0.4)] blur-[1px]"
           animate={{
@@ -288,7 +284,6 @@ export default function Home() {
       <section className="relative min-h-[90vh] sm:min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-20">
         <FloatingSparkles />
                 
-        {/* Adding floating animated elements for this specific section that work with the fixed background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {/* Light sparkle elements */}
           {[...Array(12)].map((_, i) => (
@@ -701,7 +696,6 @@ export default function Home() {
 
       {/* Final CTA */}
       <section className="py-20 sm:py-28 md:py-32 lg:py-40 relative overflow-visible">
-        {/* Elegant background for CTA section with reduced opacity to see fixed gradient balls through it */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#fdfdfd]/30 to-[#f3f3f3]/40 backdrop-blur-[2px] z-[-2]"></div>
         
         <div className="max-w-4xl mx-auto px-6 text-center relative z-1">

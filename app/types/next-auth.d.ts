@@ -6,7 +6,6 @@ declare module "next-auth" {
     name: string;
     email: string;
     image?: string;
-    // Add any custom user fields here
   }
 
   interface Session {
@@ -15,7 +14,6 @@ declare module "next-auth" {
       name: string;
       email: string;
       image?: string;
-      // Add any custom session fields here
     };
   }
 }
@@ -23,6 +21,5 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT {
     id: string;
-    // Add any custom token fields here
   }
 }

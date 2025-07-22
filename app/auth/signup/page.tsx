@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { signIn } from "next-auth/react";
 import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import VersaLogo from "../../components/VersaLogo";
 
-export default function SignUp() {
+function SignUpContent() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -268,5 +268,22 @@ export default function SignUp() {
         Built for the ones who read between the lines
       </motion.p>
     </div>
+  );
+}
+
+export default function SignUp() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[#fdfdfd] via-[#f3f3f3]/70 to-[#eaeaea]">
+        <div className="p-8 rounded-xl shadow-lg bg-white/80 backdrop-blur-lg">
+          <div className="text-center">
+            <VersaLogo size="lg" className="mx-auto mb-6" />
+            <p>Loading...</p>
+          </div>
+        </div>
+      </div>
+    }>
+      <SignUpContent />
+    </Suspense>
   );
 }

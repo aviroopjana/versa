@@ -1,15 +1,14 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import VersaLogo from "@/app/components/VersaLogo";
 
-export default function SignOut() {
+function SignOutContent() {
   const router = useRouter();
   
-  // Auto sign out and redirect to home
   useEffect(() => {
     const handleSignOut = async () => {
       await signOut({ redirect: false });
@@ -25,7 +24,6 @@ export default function SignOut() {
   
   return (
     <div className="min-h-screen flex flex-col items-center justify-center relative bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[#fdfdfd] via-[#f3f3f3]/70 to-[#eaeaea]">
-      {/* Background elements */}
       <motion.div 
         className="fixed left-[5vw] sm:left-[12vw] top-[10vh] sm:top-[15vh] w-[35vw] sm:w-[30vw] h-[35vw] sm:h-[30vw] rounded-full bg-gradient-to-br from-[#b8a1ff]/70 via-[#b8a1ff]/20 to-transparent opacity-50 blur-xl pointer-events-none z-[-1]"
         animate={{
@@ -110,5 +108,22 @@ export default function SignOut() {
         Built for the ones who read between the lines
       </motion.p>
     </div>
+  );
+}
+
+export default function SignOut() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[#fdfdfd] via-[#f3f3f3]/70 to-[#eaeaea]">
+        <div className="p-8 rounded-xl shadow-lg bg-white/80 backdrop-blur-lg">
+          <div className="text-center">
+            <VersaLogo size="lg" className="mx-auto mb-6" />
+            <p>Signing out...</p>
+          </div>
+        </div>
+      </div>
+    }>
+      <SignOutContent />
+    </Suspense>
   );
 }
