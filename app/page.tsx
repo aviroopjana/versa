@@ -3,12 +3,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import VersaLogo, { VersaWordmark } from "./components/VersaLogo";
-import FuturisticLogo from "./components/FuturisticLogo";
-import ParticleBackground from "./components/ParticleBackground";
-import CircuitParticles from "./components/CircuitParticles";
-import FloatingSparkles from "./components/FloatingSparkles";
-// ThemeToggle removed as we're enforcing light mode
+import VersaLogo from "./components/VersaLogo";
 
 export default function Home() {
   const [demoInput, setDemoInput] = useState(
