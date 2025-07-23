@@ -4,10 +4,6 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import VersaLogo, { VersaWordmark } from "./components/VersaLogo";
-import FuturisticLogo from "./components/FuturisticLogo";
-import ParticleBackground from "./components/ParticleBackground";
-import CircuitParticles from "./components/CircuitParticles";
-import FloatingSparkles from "./components/FloatingSparkles";
 // ThemeToggle removed as we're enforcing light mode
 
 export default function Home() {
@@ -266,35 +262,31 @@ export default function Home() {
           duration: 20, // Faster animation
           repeat: Infinity,
           ease: "easeInOut",
-          delay: 1
+          delay: 1,
+          times: [0, 0.16, 0.33, 0.5, 0.67, 0.84, 1]
         }}
       />
       
       {/* Navigation */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/70' : 'bg-white/60'} backdrop-blur-xl border-b border-gray-100/20 shadow-sm`}>
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95' : 'bg-white/90'} backdrop-blur-md border-b border-gray-100/20 shadow-sm`}>
         {/* Subtle gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#00ffe0]/[0.01] opacity-40"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex justify-between items-center">
-            <Link href="/" className="flex items-center group relative">
-              <div className="absolute -inset-2 bg-gradient-to-r from-[#00ffe0]/0 via-[#00ffe0]/10 to-[#00ffe0]/0 rounded-lg blur-md opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-              <VersaLogo animated={true} size="md" gradient={true} className="relative z-10" />
+            <Link href="/" className="transition-transform hover:scale-105">
+              <VersaLogo size="md" />
             </Link>
             <div className="flex items-center gap-3 sm:gap-6">
-              <Link href="/about" className="hidden sm:block text-sm text-[#0f0f0f]/80 hover:text-[#0f0f0f] transition-all font-medium cursor-pointer hover:scale-105 relative group">
+              <Link href="/about" className="hidden sm:block text-sm text-[#0f0f0f]/80 hover:text-[#0f0f0f] transition-all font-medium cursor-pointer hover:scale-105">
                 About
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#00ffe0] to-[#b8a1ff] group-hover:w-full transition-all duration-300"></span>
               </Link>
-              <Link href="/auth/signin" className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-[#00ffe0] to-[#00ffe0]/90 text-[#0f0f0f] text-xs sm:text-sm font-medium rounded-md hover:bg-[#00ffe0]/90 transition-all shadow-[0_0_15px_rgba(0,255,224,0.3)] cursor-pointer hover:scale-105 hover:shadow-[0_0_25px_rgba(0,255,224,0.5)] relative overflow-hidden group">
-                <span className="relative z-10">Launch</span>
-                <span className="absolute inset-0 bg-gradient-to-r from-[#00ffe0]/0 via-white/20 to-[#00ffe0]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></span>
+              <Link href="/auth/signin" className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[#00ffe0] text-[#0f0f0f] text-xs sm:text-sm font-medium rounded-md hover:bg-[#00ffe0]/90 transition-all shadow-[0_0_15px_rgba(0,255,224,0.25)] cursor-pointer hover:scale-105 hover:shadow-[0_0_20px_rgba(0,255,224,0.35)]">
+                Launch
               </Link>
             </div>
           </div>
         </div>
       </nav>
-
-      {/* Hero Section - Full Screen */}
 
       {/* Hero Section - Full Screen */}
       <section className="relative min-h-[90vh] sm:min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-20">
@@ -365,7 +357,7 @@ export default function Home() {
                 animate={{ y: 0 }}
                 transition={{ duration: 1.2, delay: 0.9, ease: "easeOut" }}
               >
-                <span className="font-playfair text-4xl sm:text-5xl md:text-5xl lg:text-7xl font-bold bg-gradient-to-r from-[#00ffe0] to-[#b8a1ff] bg-clip-text text-transparent drop-shadow-xl [text-shadow:0_0_25px_rgba(0,255,224,0.3),0_0_15px_rgba(184,161,255,0.3)]">
+                <span className="font-playfair text-4xl sm:text-5xl md:text-5xl lg:text-7xl font-bold bg-gradient-to-r from-[#00ffe0] to-[#b8a1ff] bg-clip-text text-transparent">
                   clarity,
                 </span>
               </motion.div>
@@ -482,7 +474,7 @@ export default function Home() {
             },
             {
               symbol: "⌘",
-              title: "JSON Schema",
+              title: "Structured Data",
               description: "Parties. Dates. Obligations. As code.",
               accent: "border-l-[#dcdcdc]/80",
               delay: 0.55

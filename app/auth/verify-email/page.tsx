@@ -106,7 +106,7 @@ function VerifyEmailContent() {
       
       {/* Auth card */}
       <motion.div 
-        className="w-full max-w-md p-8 bg-white/80 backdrop-blur-lg rounded-xl shadow-xl border border-white/60"
+        className="w-full max-w-md p-8 bg-white/95 backdrop-blur-lg rounded-xl shadow-xl border border-white/60"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -158,13 +158,13 @@ function VerifyEmailContent() {
 
         <form onSubmit={handleVerify}>
           <div className="mb-8">
-            <label className="block text-sm font-medium text-[#0f0f0f] mb-2 font-playfair" htmlFor="otp">
+            <label className="block text-sm font-medium text-gray-900 mb-2 font-playfair" htmlFor="otp">
               Verification Code
             </label>
             <input
               type="text"
               id="otp"
-              className="w-full p-3 border border-[#dcdcdc]/50 rounded-md bg-white/90 text-[#0f0f0f] focus:ring-2 focus:ring-[#b8a1ff]/40 focus:border-[#b8a1ff]/40 transition-all text-center text-2xl tracking-wider"
+              className="w-full p-3 border border-gray-300 rounded-md bg-white text-gray-900 focus:ring-2 focus:ring-[#b8a1ff]/40 focus:border-[#b8a1ff]/40 transition-all text-center text-2xl tracking-wider placeholder:text-gray-500"
               placeholder="• • • • • •"
               value={otp}
               onChange={(e) => setOtp(e.target.value.trim().substring(0, 6))}

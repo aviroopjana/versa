@@ -37,10 +37,10 @@ function ErrorContent() {
   const errorMessage = getErrorMessage(error);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center relative bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[#fdfdfd] via-[#f3f3f3]/70 to-[#eaeaea]">
+    <div className="min-h-screen flex flex-col items-center justify-center relative bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[#fdfdfd] via-[#f3f3f3]/70 to-[#eaeaea] dark:from-[#1a1a1a] dark:via-[#161616]/90 dark:to-[#131313]">
       {/* Background elements */}
       <motion.div 
-        className="fixed left-[5vw] sm:left-[12vw] top-[10vh] sm:top-[15vh] w-[35vw] sm:w-[30vw] h-[35vw] sm:h-[30vw] rounded-full bg-gradient-to-br from-[#b8a1ff]/70 via-[#b8a1ff]/20 to-transparent opacity-50 blur-xl pointer-events-none z-[-1]"
+        className="fixed left-[5vw] sm:left-[12vw] top-[10vh] sm:top-[15vh] w-[35vw] sm:w-[30vw] h-[35vw] sm:h-[30vw] rounded-full bg-gradient-to-br from-[#b8a1ff]/70 via-[#b8a1ff]/20 to-transparent dark:from-[#b8a1ff]/50 dark:via-[#b8a1ff]/15 dark:to-transparent opacity-50 blur-xl pointer-events-none z-[-1]"
         animate={{
           y: [0, -60, -30, -80, -40, -60, 0],
           x: [0, 40, 80, 60, 20, -40, 0],
@@ -56,7 +56,7 @@ function ErrorContent() {
       />
       
       <motion.div 
-        className="fixed right-[5vw] sm:right-[10vw] bottom-[5vh] sm:bottom-[10vh] w-[30vw] sm:w-[25vw] h-[30vw] sm:h-[25vw] rounded-full bg-gradient-to-tr from-[#00ffe0]/70 via-[#00ffe0]/20 to-transparent opacity-50 blur-xl pointer-events-none z-[-1]"
+        className="fixed right-[5vw] sm:right-[10vw] bottom-[5vh] sm:bottom-[10vh] w-[30vw] sm:w-[25vw] h-[30vw] sm:h-[25vw] rounded-full bg-gradient-to-tr from-[#00ffe0]/70 via-[#00ffe0]/20 to-transparent dark:from-[#00ffe0]/50 dark:via-[#00ffe0]/15 dark:to-transparent opacity-50 blur-xl pointer-events-none z-[-1]"
         animate={{
           y: [0, -55, -90, -50, -15, 40, 0],
           x: [0, -50, -40, 20, 70, 40, 0],
@@ -73,7 +73,7 @@ function ErrorContent() {
       
       {/* Error card */}
       <motion.div 
-        className="w-full max-w-md p-8 bg-white/80 backdrop-blur-lg rounded-xl shadow-xl border border-white/60"
+        className="w-full max-w-md p-8 bg-white/90 dark:bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/60 dark:border-white/20"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -81,7 +81,7 @@ function ErrorContent() {
         <div className="relative w-full mb-12">
           <Link href="/">
             <motion.div 
-              className="absolute top-0 left-0 flex items-center text-[#0f0f0f]/70 hover:text-[#0f0f0f] transition-all cursor-pointer hover:scale-105"
+              className="absolute top-0 left-0 flex items-center text-[#0f0f0f]/70 hover:text-[#0f0f0f] dark:text-white/70 dark:hover:text-white transition-all cursor-pointer hover:scale-105"
               whileHover={{ x: -3 }}
               whileTap={{ scale: 0.97 }}
             >
@@ -112,11 +112,11 @@ function ErrorContent() {
             </svg>
           </motion.div>
           
-          <h1 className="font-playfair text-2xl font-bold text-[#0f0f0f]">Authentication Error</h1>
+          <h1 className="font-playfair text-2xl font-bold text-[#0f0f0f] dark:text-white">Authentication Error</h1>
         </div>
 
         <motion.div 
-          className="mb-6 p-4 bg-red-50 border border-red-100 text-red-800 rounded-md text-sm"
+          className="mb-6 p-4 bg-red-50 dark:bg-red-950/50 border border-red-100 dark:border-red-800/30 text-red-800 dark:text-red-300 rounded-md text-sm"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
@@ -127,7 +127,7 @@ function ErrorContent() {
         <div className="flex gap-4">
           <motion.button
             onClick={() => window.history.back()}
-            className="flex-1 py-3 bg-gray-100 text-[#0f0f0f] font-medium text-sm rounded-md transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer"
+            className="flex-1 py-3 bg-gray-100 dark:bg-gray-700 text-[#0f0f0f] dark:text-white font-medium text-sm rounded-md transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer"
             whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.98, y: 0 }}
             transition={{ type: "spring", stiffness: 400, damping: 15 }}
@@ -137,7 +137,7 @@ function ErrorContent() {
           
           <Link href="/auth/signin" className="flex-1">
             <motion.button
-              className="w-full py-3 bg-gradient-to-r from-[#00ffe0]/80 to-[#b8a1ff]/80 text-[#0f0f0f] font-bold text-sm rounded-md transition-all duration-300 backdrop-blur-sm shadow-md border border-white/20 hover:shadow-lg cursor-pointer"
+              className="w-full py-3 bg-gradient-to-r from-[#00ffe0]/80 to-[#b8a1ff]/80 text-[#0f0f0f] dark:text-[#0f0f0f] font-bold text-sm rounded-md transition-all duration-300 backdrop-blur-sm shadow-md border border-white/20 dark:border-white/10 hover:shadow-lg cursor-pointer"
               whileHover={{ scale: 1.02, y: -2, boxShadow: "0 8px 20px rgba(0, 0, 0, 0.1)" }}
               whileTap={{ scale: 0.98, y: 0 }}
               transition={{ type: "spring", stiffness: 400, damping: 15 }}
@@ -149,7 +149,7 @@ function ErrorContent() {
       </motion.div>
 
       <motion.p 
-        className="mt-10 text-sm text-[#0f0f0f]/60 font-playfair italic"
+        className="mt-10 text-sm text-[#0f0f0f]/60 dark:text-white/60 font-playfair italic"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.5 }}
@@ -163,8 +163,8 @@ function ErrorContent() {
 export default function AuthError() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[#fdfdfd] via-[#f3f3f3]/70 to-[#eaeaea]">
-        <div className="p-8 rounded-xl shadow-lg bg-white/80 backdrop-blur-lg">
+      <div className="min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[#fdfdfd] via-[#f3f3f3]/70 to-[#eaeaea] dark:from-[#1a1a1a] dark:via-[#161616]/90 dark:to-[#131313]">
+        <div className="p-8 rounded-xl shadow-lg bg-white/80 dark:bg-[#1e1e1e]/90 backdrop-blur-lg">
           <div className="text-center">
             <VersaLogo size="lg" className="mx-auto mb-6" />
             <p>Loading...</p>

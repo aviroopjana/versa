@@ -45,7 +45,7 @@ function SignInContent() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center relative bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[#fdfdfd] via-[#f3f3f3]/70 to-[#eaeaea]">
+        <div className="min-h-screen flex flex-col items-center justify-center relative bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[#fdfdfd] via-[#f3f3f3]/70 to-[#eaeaea]">
       {/* Background elements */}
       <motion.div 
         className="fixed left-[5vw] sm:left-[12vw] top-[10vh] sm:top-[15vh] w-[35vw] sm:w-[30vw] h-[35vw] sm:h-[30vw] rounded-full bg-gradient-to-br from-[#b8a1ff]/70 via-[#b8a1ff]/20 to-transparent opacity-50 blur-xl pointer-events-none z-[-1]"
@@ -80,7 +80,7 @@ function SignInContent() {
       
       {/* Auth card */}
       <motion.div 
-        className="w-full max-w-md p-8 bg-white/80 backdrop-blur-lg rounded-xl shadow-xl border border-white/60"
+        className="w-full max-w-md p-8 bg-white/95 backdrop-blur-lg rounded-xl shadow-xl border border-white/60"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -133,7 +133,7 @@ function SignInContent() {
             <input
               type="email"
               id="email"
-              className="w-full p-3 border border-[#dcdcdc]/50 rounded-md bg-white/90 text-[#0f0f0f] focus:ring-2 focus:ring-[#b8a1ff]/40 focus:border-[#b8a1ff]/40 transition-all"
+              className="w-full p-3 border border-gray-300 rounded-md bg-white text-gray-900 focus:ring-2 focus:ring-[#b8a1ff]/40 focus:border-[#b8a1ff]/40 transition-all placeholder:text-gray-500"
               placeholder="hello@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -148,7 +148,7 @@ function SignInContent() {
             <input
               type="password"
               id="password"
-              className="w-full p-3 border border-[#dcdcdc]/50 rounded-md bg-white/90 text-[#0f0f0f] focus:ring-2 focus:ring-[#b8a1ff]/40 focus:border-[#b8a1ff]/40 transition-all"
+              className="w-full p-3 border border-gray-300 rounded-md bg-white text-gray-900 focus:ring-2 focus:ring-[#b8a1ff]/40 focus:border-[#b8a1ff]/40 transition-all placeholder:text-gray-500"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -182,18 +182,18 @@ function SignInContent() {
         <div className="mt-6">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-[#dcdcdc]/50"></div>
+              <div className="w-full border-t border-gray-300"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white/80 text-[#0f0f0f]/60 font-playfair">Or continue with</span>
+              <span className="px-2 bg-white text-gray-600 font-playfair">Or continue with</span>
             </div>
           </div>
 
           <div className="mt-6 grid grid-cols-2 gap-4">
             <motion.button
               onClick={() => signIn("google", { callbackUrl })}
-              className="flex justify-center items-center py-2.5 px-4 border border-[#dcdcdc]/50 rounded-md shadow-sm bg-white text-sm font-medium text-[#0f0f0f]/80 hover:bg-gray-50 cursor-pointer"
-              whileHover={{ scale: 1.03, backgroundColor: "rgba(250, 250, 250, 1)", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)" }}
+              className="flex justify-center items-center py-2.5 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors"
+              whileHover={{ scale: 1.03, boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)" }}
               whileTap={{ scale: 0.97 }}
             >
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
@@ -206,8 +206,8 @@ function SignInContent() {
             </motion.button>
             <motion.button
               onClick={() => signIn("github", { callbackUrl })}
-              className="flex justify-center items-center py-2.5 px-4 border border-[#dcdcdc]/50 rounded-md shadow-sm bg-white text-sm font-medium text-[#0f0f0f]/80 hover:bg-gray-50 cursor-pointer"
-              whileHover={{ scale: 1.03, backgroundColor: "rgba(250, 250, 250, 1)", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)" }}
+              className="flex justify-center items-center py-2.5 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors"
+              whileHover={{ scale: 1.03, boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)" }}
               whileTap={{ scale: 0.97 }}
             >
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
@@ -253,7 +253,7 @@ export default function SignIn() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[#fdfdfd] via-[#f3f3f3]/70 to-[#eaeaea]">
-        <div className="p-8 rounded-xl shadow-lg bg-white/80 backdrop-blur-lg">
+        <div className="p-8 rounded-xl shadow-lg bg-white/95 backdrop-blur-lg">
           <div className="text-center">
             <VersaLogo size="lg" className="mx-auto mb-6" />
             <p>Loading...</p>

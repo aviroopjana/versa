@@ -38,7 +38,7 @@ function NewUserContent() {
       />
       
       <motion.div 
-        className="fixed right-[5vw] sm:right-[10vw] bottom-[5vh] sm:bottom-[10vh] w-[30vw] sm:w-[25vw] h-[30vw] sm:h-[25vw] rounded-full bg-gradient-to-tr from-[#00ffe0]/70 via-[#00ffe0]/20 to-transparent opacity-50 blur-xl pointer-events-none z-[-1]"
+        className="fixed right-[5vw] sm:right-[10vw] bottom-[5vh] sm:bottom-[10vh] w-[30vw] sm:w-[25vw] h-[30vw] sm:h-[25vw] rounded-full bg-gradient-to-tr from-[#00ffe0]/70 via-[#00ffe0]/20 to-transparent dark:from-[#00ffe0]/50 dark:via-[#00ffe0]/15 dark:to-transparent opacity-50 blur-xl pointer-events-none z-[-1]"
         animate={{
           y: [0, -55, -90, -50, -15, 40, 0],
           x: [0, -50, -40, 20, 70, 40, 0],
@@ -55,7 +55,7 @@ function NewUserContent() {
       
       {/* Success card */}
       <motion.div 
-        className="w-full max-w-md p-8 bg-white/80 backdrop-blur-lg rounded-xl shadow-xl border border-white/60"
+        className="w-full max-w-md p-8 bg-white/90 dark:bg-white/10 backdrop-blur-lg rounded-xl shadow-xl border border-white/60 dark:border-white/20"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -79,12 +79,12 @@ function NewUserContent() {
             </svg>
           </motion.div>
           
-          <h1 className="font-playfair text-2xl font-bold text-[#0f0f0f]">Welcome to Versa!</h1>
-          <p className="text-[#0f0f0f]/70 font-playfair mt-2">Your account has been successfully created.</p>
+          <h1 className="font-playfair text-2xl font-bold text-[#0f0f0f] dark:text-white">Welcome to Versa!</h1>
+          <p className="text-[#0f0f0f]/70 dark:text-white/70 font-playfair mt-2">Your account has been successfully created.</p>
         </div>
 
         <motion.div 
-          className="mb-6 p-4 bg-green-50 border border-green-100 text-green-800 rounded-md text-sm"
+          className="mb-6 p-4 bg-green-50 dark:bg-green-950/50 border border-green-100 dark:border-green-800/30 text-green-800 dark:text-green-300 rounded-md text-sm"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
@@ -94,7 +94,7 @@ function NewUserContent() {
 
         <motion.button
           onClick={() => router.push(callbackUrl)}
-          className="w-full py-3 bg-gradient-to-r from-[#00ffe0]/80 to-[#b8a1ff]/80 text-[#0f0f0f] font-bold text-sm rounded-md transition-all duration-300 backdrop-blur-sm shadow-md border border-white/20 hover:shadow-lg cursor-pointer"
+          className="w-full py-3 bg-gradient-to-r from-[#00ffe0]/80 to-[#b8a1ff]/80 text-[#0f0f0f] dark:text-[#0f0f0f] font-bold text-sm rounded-md transition-all duration-300 backdrop-blur-sm shadow-md border border-white/20 dark:border-white/10 hover:shadow-lg cursor-pointer"
           whileHover={{ scale: 1.02, y: -2, boxShadow: "0 8px 20px rgba(0, 0, 0, 0.1)" }}
           whileTap={{ scale: 0.98, y: 0 }}
           transition={{ type: "spring", stiffness: 400, damping: 15 }}
@@ -104,7 +104,7 @@ function NewUserContent() {
       </motion.div>
 
       <motion.p 
-        className="mt-10 text-sm text-[#0f0f0f]/60 font-playfair italic"
+        className="mt-10 text-sm text-[#0f0f0f]/60 dark:text-white/60 font-playfair italic"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.5 }}
@@ -118,8 +118,8 @@ function NewUserContent() {
 export default function NewUser() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[#fdfdfd] via-[#f3f3f3]/70 to-[#eaeaea]">
-        <div className="p-8 rounded-xl shadow-lg bg-white/80 backdrop-blur-lg">
+      <div className="min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[#fdfdfd] via-[#f3f3f3]/70 to-[#eaeaea] dark:from-[#1a1a1a] dark:via-[#161616]/90 dark:to-[#131313]">
+        <div className="p-8 rounded-xl shadow-lg bg-white/90 dark:bg-white/10 backdrop-blur-lg">
           <div className="text-center">
             <VersaLogo size="lg" className="mx-auto mb-6" />
             <p>Loading...</p>

@@ -31,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable}`}>
-      <body className="antialiased">
+      <body className="antialiased transition-colors duration-300">
         <Providers>{children}</Providers>
       </body>
     </html>

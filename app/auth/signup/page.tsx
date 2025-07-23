@@ -1,14 +1,13 @@
 "use client";
 
 import { useState, Suspense } from "react";
-import { signIn } from "next-auth/react";
-import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import VersaLogo from "../../components/VersaLogo";
 
 function SignUpContent() {
-  const [name, setName] = useState("");
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -20,37 +19,43 @@ function SignUpContent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (password !== confirmPassword) {
-      setError("Passwords don't match");
-      return;
-    }
-    
     setIsLoading(true);
     setError("");
 
+    // Basic validation
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      setIsLoading(false);
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long");
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName,
+          email,
+          password,
+        }),
       });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || "Something went wrong");
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Registration failed');
       }
-      
-      // Account created successfully - redirect to email verification page
-      if (data.redirect) {
-        router.push(data.redirect);
-      } else {
-        // Fallback to sign in page if redirect is not provided
-        router.push(`/auth/signin?registered=true&callbackUrl=${encodeURIComponent(callbackUrl)}`);
-      }
-    } catch (error: any) {
-      setError(error.message || "An unexpected error occurred");
+
+      // Redirect to sign in with success message
+      router.push(`/auth/signin?registered=true`);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'An unexpected error occurred');
       setIsLoading(false);
     }
   };
@@ -73,6 +78,7 @@ function SignUpContent() {
           times: [0, 0.2, 0.4, 0.55, 0.7, 0.85, 1]
         }}
       />
+      
       <motion.div 
         className="fixed right-[5vw] sm:right-[10vw] bottom-[5vh] sm:bottom-[10vh] w-[30vw] sm:w-[25vw] h-[30vw] sm:h-[25vw] rounded-full bg-gradient-to-tr from-[#00ffe0]/70 via-[#00ffe0]/20 to-transparent opacity-50 blur-xl pointer-events-none z-[-1]"
         animate={{
@@ -91,7 +97,7 @@ function SignUpContent() {
       
       {/* Auth card */}
       <motion.div 
-        className="w-full max-w-md p-8 bg-white/80 backdrop-blur-lg rounded-xl shadow-xl border border-white/60 my-10"
+        className="w-full max-w-md p-8 bg-white/95 backdrop-blur-lg rounded-xl shadow-xl border border-white/60"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -110,10 +116,11 @@ function SignUpContent() {
             </motion.div>
           </Link>
         </div>
+        
         <div className="text-center mb-8">
           <VersaLogo size="lg" className="mx-auto mb-6" />
-          <h1 className="font-playfair text-2xl font-bold text-[#0f0f0f]">Create an account</h1>
-          <p className="text-[#0f0f0f]/70 font-playfair italic mt-2">Join the legal translation revolution</p>
+          <h1 className="font-playfair text-2xl font-bold text-[#0f0f0f]">Create Your Account</h1>
+          <p className="text-[#0f0f0f]/70 font-playfair italic mt-2">Join the legal translation platform</p>
         </div>
 
         {error && (
@@ -128,28 +135,28 @@ function SignUpContent() {
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-[#0f0f0f] mb-2 font-playfair" htmlFor="name">
+            <label htmlFor="fullName" className="block text-sm font-medium text-[#0f0f0f] mb-2">
               Full Name
             </label>
             <input
               type="text"
-              id="name"
-              className="w-full p-3 border border-[#dcdcdc]/50 rounded-md bg-white/90 text-[#0f0f0f] focus:ring-2 focus:ring-[#b8a1ff]/40 focus:border-[#b8a1ff]/40 transition-all"
+              id="fullName"
+              className="w-full p-3 border border-gray-300 rounded-md bg-white text-gray-900 focus:ring-2 focus:ring-[#b8a1ff]/40 focus:border-[#b8a1ff]/40 transition-all placeholder:text-gray-500"
               placeholder="John Doe"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
               required
             />
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-[#0f0f0f] mb-2 font-playfair" htmlFor="email">
-              Email
+            <label htmlFor="email" className="block text-sm font-medium text-[#0f0f0f] mb-2">
+              Email Address
             </label>
             <input
               type="email"
               id="email"
-              className="w-full p-3 border border-[#dcdcdc]/50 rounded-md bg-white/90 text-[#0f0f0f] focus:ring-2 focus:ring-[#b8a1ff]/40 focus:border-[#b8a1ff]/40 transition-all"
+              className="w-full p-3 border border-gray-300 rounded-md bg-white text-gray-900 focus:ring-2 focus:ring-[#b8a1ff]/40 focus:border-[#b8a1ff]/40 transition-all placeholder:text-gray-500"
               placeholder="hello@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -158,33 +165,31 @@ function SignUpContent() {
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-[#0f0f0f] mb-2 font-playfair" htmlFor="password">
+            <label htmlFor="password" className="block text-sm font-medium text-[#0f0f0f] mb-2">
               Password
             </label>
             <input
               type="password"
               id="password"
-              className="w-full p-3 border border-[#dcdcdc]/50 rounded-md bg-white/90 text-[#0f0f0f] focus:ring-2 focus:ring-[#b8a1ff]/40 focus:border-[#b8a1ff]/40 transition-all"
+              className="w-full p-3 border border-gray-300 rounded-md bg-white text-gray-900 focus:ring-2 focus:ring-[#b8a1ff]/40 focus:border-[#b8a1ff]/40 transition-all placeholder:text-gray-500"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              minLength={8}
               required
             />
           </div>
 
           <div className="mb-8">
-            <label className="block text-sm font-medium text-[#0f0f0f] mb-2 font-playfair" htmlFor="confirmPassword">
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-[#0f0f0f] mb-2">
               Confirm Password
             </label>
             <input
               type="password"
               id="confirmPassword"
-              className="w-full p-3 border border-[#dcdcdc]/50 rounded-md bg-white/90 text-[#0f0f0f] focus:ring-2 focus:ring-[#b8a1ff]/40 focus:border-[#b8a1ff]/40 transition-all"
+              className="w-full p-3 border border-gray-300 rounded-md bg-white text-gray-900 focus:ring-2 focus:ring-[#b8a1ff]/40 focus:border-[#b8a1ff]/40 transition-all placeholder:text-gray-500"
               placeholder="••••••••"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              minLength={8}
               required
             />
           </div>
@@ -197,48 +202,46 @@ function SignUpContent() {
             whileTap={{ scale: 0.98, y: 0 }}
             transition={{ type: "spring", stiffness: 400, damping: 15 }}
           >
-            {isLoading ? "Creating account..." : "Create Account"}
+            {isLoading ? "Creating Account..." : "Create Account"}
           </motion.button>
         </form>
 
         <div className="mt-6">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-[#dcdcdc]/50"></div>
+              <div className="w-full border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white/80 text-[#0f0f0f]/60 font-playfair">Or continue with</span>
+              <span className="px-2 bg-white text-gray-500">Or continue with</span>
             </div>
           </div>
 
           <div className="mt-6 grid grid-cols-2 gap-4">
             <motion.button
-              onClick={() => signIn("google", { callbackUrl })}
-              className="flex justify-center items-center py-2.5 px-4 border border-[#dcdcdc]/50 rounded-md shadow-sm bg-white text-sm font-medium text-[#0f0f0f]/80 hover:bg-gray-50 cursor-pointer"
-              whileHover={{ scale: 1.03, backgroundColor: "rgba(250, 250, 250, 1)", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)" }}
+              type="button"
+              className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 cursor-pointer"
+              whileHover={{ scale: 1.03, boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)" }}
               whileTap={{ scale: 0.97 }}
             >
-              <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
-                <path
-                  fill="currentColor"
-                  d="M21.35,11.1H12.18V13.83H18.69C18.36,17.64 15.19,19.27 12.19,19.27C8.36,19.27 5.22,16.25 5.22,12.27C5.22,8.29 8.36,5.28 12.19,5.28C15.14,5.28 17.09,7.23 17.09,7.23L19.04,5.27C19.04,5.27 16.34,2.72 12.19,2.72C6.92,2.72 2.51,7.06 2.51,12.27C2.51,17.49 6.92,21.82 12.19,21.82C17.34,21.82 21.06,17.84 21.06,12.27C21.06,11.54 21.35,11.1 21.35,11.1Z"
-                />
+              <svg className="w-5 h-5" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
               </svg>
-              Google
+              <span className="ml-2">Google</span>
             </motion.button>
+
             <motion.button
-              onClick={() => signIn("github", { callbackUrl })}
-              className="flex justify-center items-center py-2.5 px-4 border border-[#dcdcdc]/50 rounded-md shadow-sm bg-white text-sm font-medium text-[#0f0f0f]/80 hover:bg-gray-50 cursor-pointer"
-              whileHover={{ scale: 1.03, backgroundColor: "rgba(250, 250, 250, 1)", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)" }}
+              type="button"
+              className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 cursor-pointer"
+              whileHover={{ scale: 1.03, boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)" }}
               whileTap={{ scale: 0.97 }}
             >
-              <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
-                <path
-                  fill="currentColor"
-                  d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z"
-                />
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z"/>
               </svg>
-              GitHub
+              <span className="ml-2">GitHub</span>
             </motion.button>
           </div>
         </div>
@@ -246,21 +249,18 @@ function SignUpContent() {
         <div className="mt-8 text-center">
           <div className="text-sm text-[#0f0f0f]/70 font-playfair">
             Already have an account?{" "}
-            <Link href="/auth/signin" className="text-[#b8a1ff] hover:underline font-medium cursor-pointer inline-block">
-              <motion.span
-                className="inline-block"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                Sign in
-              </motion.span>
+            <Link 
+              href="/auth/signin" 
+              className="font-medium text-[#b8a1ff] hover:text-[#b8a1ff]/80 transition-colors"
+            >
+              Sign in
             </Link>
           </div>
         </div>
       </motion.div>
 
       <motion.p 
-        className="mt-4 mb-10 text-sm text-[#0f0f0f]/60 font-playfair italic"
+        className="mt-10 text-sm text-[#0f0f0f]/60 font-playfair italic"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.5 }}
@@ -275,7 +275,7 @@ export default function SignUp() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[#fdfdfd] via-[#f3f3f3]/70 to-[#eaeaea]">
-        <div className="p-8 rounded-xl shadow-lg bg-white/80 backdrop-blur-lg">
+        <div className="p-8 rounded-xl shadow-lg bg-white/95 backdrop-blur-lg">
           <div className="text-center">
             <VersaLogo size="lg" className="mx-auto mb-6" />
             <p>Loading...</p>
