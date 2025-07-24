@@ -2,9 +2,11 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import VersaLogo from "../components/VersaLogo";
+import PDFUpload from "../components/PDFUpload";
+import ExtractedTextDisplay from "../components/ExtractedTextDisplay";
 
 export default function Dashboard() {
   const { data: session, status } = useSession({
@@ -14,6 +16,39 @@ export default function Dashboard() {
     },
   });
   const router = useRouter();
+  const [extractedData, setExtractedData] = useState<any>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const handleFileSelect = async (file: File) => {
+    setIsProcessing(true);
+    
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/upload-pdf', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setExtractedData(result.data);
+      } else {
+        alert(result.error || 'Failed to process PDF');
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      alert('Failed to upload file. Please try again.');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleReset = () => {
+    setExtractedData(null);
+  };
 
   if (status === "loading") {
     return (
@@ -95,38 +130,21 @@ export default function Dashboard() {
             <p className="font-playfair italic text-[#0f0f0f]/70 mt-2">Your legal transformations await</p>
           </motion.div>
 
-          {/* Playground Section */}
+          {/* PDF Upload Section */}
           <motion.div 
-            className="mb-12 bg-white rounded-xl shadow-md p-6"
+            className="mb-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <h2 className="font-playfair text-2xl font-bold text-[#0f0f0f] mb-4">Playground</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div className="border border-gray-200 rounded-lg p-4">
-                  <h3 className="text-sm font-medium text-gray-500 mb-2">Input</h3>
-                  <textarea 
-                    className="w-full h-64 p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                    placeholder="Enter your legal text here..."
-                  ></textarea>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 hover:shadow-lg hover:scale-105 transition-all cursor-pointer">Simplify</button>
-                  <button className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 hover:shadow-lg hover:scale-105 transition-all cursor-pointer">Summarize</button>
-                  <button className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 hover:shadow-lg hover:scale-105 transition-all cursor-pointer">Analyze</button>
-                </div>
+            {!extractedData ? (
+              <div className="bg-white rounded-xl shadow-md p-6">
+                <h2 className="font-playfair text-2xl font-bold text-[#0f0f0f] mb-6">Upload Legal Document</h2>
+                <PDFUpload onFileSelect={handleFileSelect} isProcessing={isProcessing} />
               </div>
-              <div>
-                <div className="border border-gray-200 rounded-lg p-4 h-full">
-                  <h3 className="text-sm font-medium text-gray-500 mb-2">Output</h3>
-                  <div className="h-64 p-3 bg-gray-50 rounded-lg overflow-y-auto">
-                    <p className="text-gray-400 italic">Transformed text will appear here...</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            ) : (
+              <ExtractedTextDisplay data={extractedData} onReset={handleReset} />
+            )}
           </motion.div>
 
           <motion.div
