@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import VersaLogo from "../components/VersaLogo";
 import PDFUpload from "../components/PDFUpload";
 import ExtractedTextDisplay from "../components/ExtractedTextDisplay";
+import AITransformation from "../components/AITransformation";
 import SettingsPanel from "../components/SettingsPanel";
 
 export default function Dashboard() {
@@ -20,6 +21,7 @@ export default function Dashboard() {
   const [extractedData, setExtractedData] = useState<any>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [aiResults, setAiResults] = useState<any>(null);
 
   const handleFileSelect = async (file: File) => {
     setIsProcessing(true);
@@ -50,6 +52,11 @@ export default function Dashboard() {
 
   const handleReset = () => {
     setExtractedData(null);
+    setAiResults(null);
+  };
+
+  const handleAIResult = (result: any) => {
+    setAiResults(result);
   };
 
   if (status === "loading") {
@@ -162,6 +169,23 @@ export default function Dashboard() {
               <ExtractedTextDisplay data={extractedData} onReset={handleReset} />
             )}
           </motion.div>
+
+          {/* AI Transformation Section */}
+          {extractedData && (
+            <motion.div 
+              className="mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <div className="bg-white rounded-xl shadow-md p-6">
+                <AITransformation 
+                  extractedText={extractedData.text} 
+                  onResult={handleAIResult}
+                />
+              </div>
+            </motion.div>
+          )}
 
           <motion.div
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
