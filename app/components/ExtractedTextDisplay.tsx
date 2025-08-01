@@ -2,44 +2,26 @@
 
 import { motion } from 'framer-motion';
 
+export interface ExtractedPDFData {
+  text: string;
+  fileName: string;
+  fileSize: string;
+  pageCount: number;
+  wordCount: number;
+  extractionTime: number;
+}
+
 interface ExtractedTextDisplayProps {
-  data: {
-    text: string;
-    numPages: number;
-    fileName: string;
-    fileSize: number;
-    metadata: {
-      title: string;
-      author: string;
-      subject: string;
-      creator: string;
-      producer: string;
-      creationDate: string;
-      modDate: string;
-    };
-  } | null;
+  data: ExtractedPDFData | null;
   onReset: () => void;
 }
 
 export default function ExtractedTextDisplay({ data, onReset }: ExtractedTextDisplayProps) {
   if (!data) return null;
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  };
-
-  const formatDate = (dateString: string) => {
-    if (!dateString) return 'N/A';
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-    } catch {
-      return dateString;
-    }
+  const formatExtractionTime = (ms: number) => {
+    if (ms < 1000) return `${ms}ms`;
+    return `${(ms / 1000).toFixed(1)}s`;
   };
 
   return (
@@ -69,37 +51,31 @@ export default function ExtractedTextDisplay({ data, onReset }: ExtractedTextDis
             </div>
             <div className="flex justify-between">
               <span className="text-gray-500">File Size:</span>
-              <span className="font-medium text-[#0f0f0f]">{formatFileSize(data.fileSize)}</span>
+              <span className="font-medium text-[#0f0f0f]">{data.fileSize}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-500">Pages:</span>
-              <span className="font-medium text-[#0f0f0f]">{data.numPages}</span>
+              <span className="font-medium text-[#0f0f0f]">{data.pageCount}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-500">Characters:</span>
-              <span className="font-medium text-[#0f0f0f]">{data.text.length.toLocaleString()}</span>
+              <span className="text-gray-500">Words:</span>
+              <span className="font-medium text-[#0f0f0f]">{data.wordCount.toLocaleString()}</span>
             </div>
           </div>
           
           <div className="space-y-2">
-            {data.metadata.title && (
-              <div className="flex justify-between">
-                <span className="text-gray-500">Title:</span>
-                <span className="font-medium text-[#0f0f0f] truncate ml-2">{data.metadata.title}</span>
-              </div>
-            )}
-            {data.metadata.author && (
-              <div className="flex justify-between">
-                <span className="text-gray-500">Author:</span>
-                <span className="font-medium text-[#0f0f0f] truncate ml-2">{data.metadata.author}</span>
-              </div>
-            )}
-            {data.metadata.creationDate && (
-              <div className="flex justify-between">
-                <span className="text-gray-500">Created:</span>
-                <span className="font-medium text-[#0f0f0f] text-xs">{formatDate(data.metadata.creationDate)}</span>
-              </div>
-            )}
+            <div className="flex justify-between">
+              <span className="text-gray-500">Characters:</span>
+              <span className="font-medium text-[#0f0f0f]">{data.text.length.toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-500">Extraction Time:</span>
+              <span className="font-medium text-[#0f0f0f]">{formatExtractionTime(data.extractionTime)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-500">Status:</span>
+              <span className="font-medium text-green-600">✓ Ready for AI</span>
+            </div>
           </div>
         </div>
       </div>

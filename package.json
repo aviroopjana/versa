@@ -25,6 +25,7 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-dropzone": "^14.3.8",
+    "react-pdftotext": "^1.3.4",
     "resend": "^4.7.0"
   },
   "devDependencies": {
