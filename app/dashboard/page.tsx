@@ -55,6 +55,16 @@ export default function Dashboard() {
     setIsProcessing(false);
   };
 
+  /**
+   * Scroll to AI transformation section
+   */
+  const scrollToTransformation = () => {
+    const transformationSection = document.getElementById('ai-transformation-section');
+    if (transformationSection) {
+      transformationSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   const handleAIResult = (result: any) => {
     setAiResults(result);
   };
@@ -199,13 +209,18 @@ export default function Dashboard() {
                 />
               </div>
             ) : (
-              <ExtractedTextDisplay data={extractedData} onReset={handleReset} />
+              <ExtractedTextDisplay 
+                data={extractedData} 
+                onReset={handleReset}
+                onStartTransformation={scrollToTransformation}
+              />
             )}
           </motion.div>
 
           {/* AI Transformation Section */}
           {extractedData && (
             <motion.div 
+              id="ai-transformation-section"
               className="mb-12"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

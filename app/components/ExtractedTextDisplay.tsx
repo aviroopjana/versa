@@ -14,9 +14,10 @@ export interface ExtractedPDFData {
 interface ExtractedTextDisplayProps {
   data: ExtractedPDFData | null;
   onReset: () => void;
+  onStartTransformation?: () => void;
 }
 
-export default function ExtractedTextDisplay({ data, onReset }: ExtractedTextDisplayProps) {
+export default function ExtractedTextDisplay({ data, onReset, onStartTransformation }: ExtractedTextDisplayProps) {
   if (!data) return null;
 
   const formatExtractionTime = (ms: number) => {
@@ -112,12 +113,13 @@ export default function ExtractedTextDisplay({ data, onReset }: ExtractedTextDis
 
       {/* Next steps */}
       <div className="bg-gradient-to-r from-[#00ffe0]/10 to-[#b8a1ff]/10 rounded-xl p-6">
-        <h3 className="text-lg font-playfair font-semibold text-[#0f0f0f] mb-3">Next Steps</h3>
+        <h3 className="text-lg font-playfair font-semibold text-[#0f0f0f] mb-3">Ready for AI Transformation!</h3>
         <div className="grid md:grid-cols-3 gap-4">
           <motion.button
+            onClick={onStartTransformation}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all"
+            className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all hover:bg-[#b8a1ff]/5"
           >
             <div className="text-2xl mb-2">🎭</div>
             <div className="text-sm font-medium text-[#0f0f0f]">Transform to Poetry</div>
@@ -125,9 +127,10 @@ export default function ExtractedTextDisplay({ data, onReset }: ExtractedTextDis
           </motion.button>
           
           <motion.button
+            onClick={onStartTransformation}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all"
+            className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all hover:bg-[#b8a1ff]/5"
           >
             <div className="text-2xl mb-2">📝</div>
             <div className="text-sm font-medium text-[#0f0f0f]">Simplify Language</div>
@@ -135,14 +138,19 @@ export default function ExtractedTextDisplay({ data, onReset }: ExtractedTextDis
           </motion.button>
           
           <motion.button
+            onClick={onStartTransformation}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all"
+            className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all hover:bg-[#b8a1ff]/5"
           >
             <div className="text-2xl mb-2">📊</div>
-            <div className="text-sm font-medium text-[#0f0f0f]">Structure & Analyze</div>
-            <div className="text-xs text-gray-500 mt-1">Break down into sections</div>
+            <div className="text-sm font-medium text-[#0f0f0f]">Analyze & Structure</div>
+            <div className="text-xs text-gray-500 mt-1">Extract key information</div>
           </motion.button>
+        </div>
+        
+        <div className="mt-4 text-center">
+          <p className="text-sm text-[#0f0f0f]/60">Your document is ready for AI transformation. Scroll down to explore all options!</p>
         </div>
       </div>
     </motion.div>
