@@ -61,7 +61,7 @@ export default function VersaLogo({
           animate={animated ? { opacity: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          <span className={`font-sans font-black tracking-wider ${gradient ? "bg-gradient-to-r from-[#000] to-[#333] bg-clip-text text-transparent" : "text-[#000]"} uppercase mr-[0.06em] relative`}>
+          <span className={`font-logo font-bold tracking-wider ${gradient ? "bg-gradient-to-r from-[#000] to-[#333] bg-clip-text text-transparent" : "text-[#000]"} uppercase mr-[0.06em] relative`}>
             V
             <motion.span 
               className="absolute -top-1 -right-1 w-2 h-2 bg-gradient-to-r from-[#00ffe0] to-[#00ffe0] rounded-full shadow-[0_0_10px_rgba(0,255,224,0.7)]"
@@ -77,7 +77,7 @@ export default function VersaLogo({
             ></motion.span>
           </span>
           <motion.span 
-            className={`font-sans font-semibold tracking-wide ${gradient ? "bg-gradient-to-r from-[#333] to-[#666] bg-clip-text text-transparent" : "text-[#333]"} uppercase`}
+            className={`font-logo font-normal tracking-wide ${gradient ? "bg-gradient-to-r from-[#333] to-[#666] bg-clip-text text-transparent" : "text-[#333]"} uppercase`}
             initial={animated ? { opacity: 0 } : {}}
             animate={animated ? { opacity: 1 } : {}}
             transition={{ duration: 0.7, delay: 0.3 }}

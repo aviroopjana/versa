@@ -29,10 +29,43 @@ export default function APIKeyManager({ onClose }: APIKeyManagerProps) {
   const [isAddingKey, setIsAddingKey] = useState(false);
   const [newKey, setNewKey] = useState({ name: '', provider: '', key: '' });
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [testingKey, setTestingKey] = useState<string | null>(null);
 
   useEffect(() => {
     loadApiKeys();
   }, []);
+
+  const testApiKey = async (keyId: string, provider: string) => {
+    if (provider !== 'openai') {
+      alert('Testing is currently only available for OpenAI keys');
+      return;
+    }
+
+    setTestingKey(keyId);
+    try {
+      const apiKey = apiKeys.find(k => k.id === keyId);
+      if (!apiKey) return;
+
+      const response = await fetch('/api/test-openai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ apiKey: apiKey.key }),
+      });
+
+      const result = await response.json();
+      
+      if (result.valid) {
+        alert(`✅ API key is valid! Found ${result.modelsCount} models.`);
+      } else {
+        alert(`❌ API key is invalid: ${result.error}`);
+      }
+    } catch (error) {
+      alert('❌ Failed to test API key');
+    } finally {
+      setTestingKey(null);
+    }
+  };
 
   const loadApiKeys = async () => {
     try {
@@ -50,6 +83,7 @@ export default function APIKeyManager({ onClose }: APIKeyManagerProps) {
     if (!newKey.name || !newKey.provider || !newKey.key) return;
     
     setIsLoading(true);
+    setError(null);
     try {
       const response = await fetch('/api/user/api-keys', {
         method: 'POST',
@@ -62,9 +96,19 @@ export default function APIKeyManager({ onClose }: APIKeyManagerProps) {
         setApiKeys([...apiKeys, addedKey]);
         setNewKey({ name: '', provider: '', key: '' });
         setIsAddingKey(false);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.error || 'Failed to add API key');
+        if (errorData.error?.includes('sign out and sign in')) {
+          // Redirect to sign out if session is invalid
+          setTimeout(() => {
+            window.location.href = '/auth/signout';
+          }, 2000);
+        }
       }
     } catch (error) {
       console.error('Failed to add API key:', error);
+      setError('Failed to add API key. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -211,6 +255,21 @@ export default function APIKeyManager({ onClose }: APIKeyManagerProps) {
                     </div>
                   </div>
 
+                  {/* Error Display */}
+                  {error && (
+                    <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
+                      <div className="flex items-start space-x-2">
+                        <svg className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                        </svg>
+                        <div>
+                          <p className="text-red-800 text-sm font-medium">Error</p>
+                          <p className="text-red-700 text-sm">{error}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="flex space-x-3 mt-4">
                     <button
                       onClick={handleAddKey}
@@ -223,6 +282,7 @@ export default function APIKeyManager({ onClose }: APIKeyManagerProps) {
                       onClick={() => {
                         setIsAddingKey(false);
                         setNewKey({ name: '', provider: '', key: '' });
+                        setError(null);
                       }}
                       className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
                     >
@@ -265,6 +325,16 @@ export default function APIKeyManager({ onClose }: APIKeyManagerProps) {
                       </div>
                       
                       <div className="flex items-center space-x-2">
+                        {apiKey.provider === 'openai' && (
+                          <button
+                            onClick={() => testApiKey(apiKey.id, apiKey.provider)}
+                            disabled={testingKey === apiKey.id}
+                            className="px-2 py-1 text-xs bg-blue-100 text-blue-800 hover:bg-blue-200 rounded transition-colors disabled:opacity-50"
+                          >
+                            {testingKey === apiKey.id ? 'Testing...' : 'Test'}
+                          </button>
+                        )}
+                        
                         <button
                           onClick={() => handleToggleActive(apiKey.id)}
                           className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${

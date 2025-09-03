@@ -1,23 +1,37 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
+import { Inter, Space_Grotesk, Fira_Code, Kaushan_Script, Audiowide } from "next/font/google";
 import "./globals.css";
 import "./lib/polyfills"; // Import polyfills globally
 import Providers from "./providers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const firaCode = Fira_Code({
+  variable: "--font-fira-code",
   subsets: ["latin"],
-  weight: ["400", "600"],
+  weight: ["300", "400", "500"],
+});
+
+const kaushanScript = Kaushan_Script({
+  variable: "--font-kaushan-script",
+  subsets: ["latin"],
+  weight: ["400"],
+});
+
+const audiowide = Audiowide({
+  variable: "--font-audiowide",
+  subsets: ["latin"],
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -31,7 +45,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable}`}>
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${firaCode.variable} ${kaushanScript.variable} ${audiowide.variable}`}>
       <body className="antialiased transition-colors duration-300">
         <Providers>{children}</Providers>
       </body>

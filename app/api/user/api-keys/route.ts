@@ -12,6 +12,17 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // Check if user exists in database (in case of database reset)
+    const userExists = await prisma.user.findUnique({
+      where: { id: session.user.id }
+    });
+
+    if (!userExists) {
+      return NextResponse.json({ 
+        error: 'User session invalid. Please sign out and sign in again.' 
+      }, { status: 401 });
+    }
+
     const apiKeys = await prisma.apiKey.findMany({
       where: {
         userId: session.user.id,
@@ -51,6 +62,17 @@ export async function POST(request: NextRequest) {
 
     if (!name || !provider || !key) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // Check if user exists in database (in case of database reset)
+    const userExists = await prisma.user.findUnique({
+      where: { id: session.user.id }
+    });
+
+    if (!userExists) {
+      return NextResponse.json({ 
+        error: 'User session invalid. Please sign out and sign in again.' 
+      }, { status: 401 });
     }
 
     // Encrypt the API key before storing

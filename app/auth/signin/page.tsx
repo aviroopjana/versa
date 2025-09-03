@@ -100,7 +100,7 @@ function SignInContent() {
           </Link>
         </div>
         <div className="text-center mb-8">
-          <VersaLogo size="lg" className="mx-auto mb-6" />
+          <VersaLogo size="md" className="mx-auto mb-6" />
           <h1 className="font-playfair text-2xl font-bold text-[#0f0f0f]">Sign in to Versa</h1>
           <p className="text-[#0f0f0f]/70 font-playfair italic mt-2">Access the legal translation platform</p>
         </div>
@@ -255,7 +255,7 @@ export default function SignIn() {
       <div className="min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[#fdfdfd] via-[#f3f3f3]/70 to-[#eaeaea]">
         <div className="p-8 rounded-xl shadow-lg bg-white/95 backdrop-blur-lg">
           <div className="text-center">
-            <VersaLogo size="lg" className="mx-auto mb-6" />
+            <VersaLogo size="md" className="mx-auto mb-6" />
             <p>Loading...</p>
           </div>
         </div>

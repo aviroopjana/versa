@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface LLMModel {
@@ -96,10 +96,24 @@ interface ModelSelectorProps {
 export default function ModelSelector({ selectedModel, onModelSelect, availableProviders }: ModelSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [filter, setFilter] = useState('all');
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const availableModels = llmModels.filter(model => 
     availableProviders.includes(model.provider)
   );
+
+  // Calculate dropdown position when opened
+  useEffect(() => {
+    if (isOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      setDropdownPosition({
+        top: rect.bottom + window.scrollY + 8,
+        left: rect.left + window.scrollX,
+        width: rect.width
+      });
+    }
+  }, [isOpen]);
 
   const filteredModels = filter === 'all' 
     ? availableModels 
@@ -118,6 +132,7 @@ export default function ModelSelector({ selectedModel, onModelSelect, availableP
     <div className="relative">
       {/* Selected Model Display */}
       <motion.button
+        ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
         className="w-full p-4 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-xl hover:border-[#b8a1ff] transition-all duration-300 group"
         whileHover={{ scale: 1.02 }}
@@ -153,13 +168,25 @@ export default function ModelSelector({ selectedModel, onModelSelect, availableP
       {/* Model Selection Dropdown */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 overflow-hidden"
-          >
+          <>
+            {/* Backdrop */}
+            <div 
+              className="fixed inset-0 z-[9998]" 
+              onClick={() => setIsOpen(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className="fixed bg-white rounded-xl shadow-2xl border border-gray-200 z-[9999] overflow-hidden"
+              style={{ 
+                top: dropdownPosition.top,
+                left: dropdownPosition.left,
+                width: dropdownPosition.width,
+                maxHeight: '400px'
+              }}
+            >
             {/* Filter Tabs */}
             <div className="p-4 border-b border-gray-100">
               <div className="flex space-x-2 overflow-x-auto">
@@ -264,17 +291,10 @@ export default function ModelSelector({ selectedModel, onModelSelect, availableP
                 })
               )}
             </div>
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
-
-      {/* Backdrop */}
-      {isOpen && (
-        <div 
-          className="fixed inset-0 z-40" 
-          onClick={() => setIsOpen(false)}
-        />
-      )}
     </div>
   );
 }

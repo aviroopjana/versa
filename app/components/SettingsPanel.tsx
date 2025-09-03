@@ -152,6 +152,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
                     className="space-y-6"
+                    style={{ overflow: 'visible' }}
                   >
                     <div>
                       <h3 className="font-medium text-[#0f0f0f] mb-3">Select AI Model</h3>

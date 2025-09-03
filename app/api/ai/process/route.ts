@@ -31,11 +31,21 @@ interface AnthropicResponse {
 
 async function callOpenAI(apiKey: string, prompt: any, settings: any): Promise<string> {
   try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    // Determine if this is an OpenRouter key or direct OpenAI key
+    const isOpenRouter = apiKey.startsWith('sk-or-');
+    const endpoint = isOpenRouter 
+      ? 'https://openrouter.ai/api/v1/chat/completions'
+      : 'https://api.openai.com/v1/chat/completions';
+
+    const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
+        ...(isOpenRouter && {
+          'HTTP-Referer': 'https://versa.ai',
+          'X-Title': 'Versa AI Platform'
+        })
       },
       body: JSON.stringify({
         model: settings.selectedModel || 'gpt-4o',
@@ -51,16 +61,18 @@ async function callOpenAI(apiKey: string, prompt: any, settings: any): Promise<s
 
     if (!response.ok) {
       const error = await response.json();
+      const isOpenRouter = apiKey.startsWith('sk-or-');
+      const providerName = isOpenRouter ? 'OpenRouter' : 'OpenAI';
       
       if (response.status === 429) {
-        throw new ExternalServiceError('OpenAI rate limit exceeded', 'openai');
+        throw new ExternalServiceError(`${providerName} rate limit exceeded`, 'openai');
       }
       
       if (response.status === 401) {
-        throw new ExternalServiceError('Invalid OpenAI API key', 'openai');
+        throw new ExternalServiceError(`Invalid ${providerName} API key`, 'openai');
       }
       
-      throw new ExternalServiceError(`OpenAI API error: ${error.error?.message || 'Unknown error'}`, 'openai');
+      throw new ExternalServiceError(`${providerName} API error: ${error.error?.message || 'Unknown error'}`, 'openai');
     }
 
     const data: OpenAIResponse = await response.json();
@@ -69,7 +81,9 @@ async function callOpenAI(apiKey: string, prompt: any, settings: any): Promise<s
     if (error instanceof ExternalServiceError) {
       throw error;
     }
-    throw new ExternalServiceError(`Failed to connect to OpenAI: ${error instanceof Error ? error.message : 'Unknown error'}`, 'openai');
+    const isOpenRouter = apiKey.startsWith('sk-or-');
+    const providerName = isOpenRouter ? 'OpenRouter' : 'OpenAI';
+    throw new ExternalServiceError(`Failed to connect to ${providerName}: ${error instanceof Error ? error.message : 'Unknown error'}`, 'openai');
   }
 }
 
@@ -211,6 +225,11 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
 
   // Decrypt the API key
   const decryptedApiKey = decrypt(apiKeyRecord.key);
+
+  // Validate API key format for OpenAI/OpenRouter
+  if (provider === 'openai' && !decryptedApiKey.startsWith('sk-') && !decryptedApiKey.startsWith('sk-or-')) {
+    throw new ValidationError('Invalid OpenAI/OpenRouter API key format');
+  }
 
   // Get the prompt template
   const template = getPromptTemplate(transformationType);

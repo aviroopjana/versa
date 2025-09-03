@@ -125,7 +125,7 @@ export default function Home() {
   );
 
   return (
-    <div className="min-h-screen font-geist relative">
+    <div className="min-h-screen font-sans relative">
       {/* Background Base Layer */}
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[#fdfdfd] via-[#f3f3f3]/70 to-[#eaeaea] pointer-events-none z-[-3]"></div>
       
@@ -334,7 +334,7 @@ export default function Home() {
                 transition={{ duration: 1, delay: index * 0.3 }}
               >
                 <motion.span
-                  className="inline-block font-playfair text-4xl sm:text-5xl md:text-5xl lg:text-7xl font-bold text-[#0f0f0f] drop-shadow-md tracking-tight"
+                  className="inline-block font-script text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal text-[#0f0f0f] drop-shadow-sm tracking-wide leading-[0.9]"
                   initial={{ y: 60 }}
                   animate={{ y: 0 }}
                   transition={{ 
@@ -360,7 +360,7 @@ export default function Home() {
                 animate={{ y: 0 }}
                 transition={{ duration: 1.2, delay: 0.9, ease: "easeOut" }}
               >
-                <span className="font-playfair text-4xl sm:text-5xl md:text-5xl lg:text-7xl font-bold bg-gradient-to-r from-[#00ffe0] to-[#b8a1ff] bg-clip-text text-transparent drop-shadow-xl [text-shadow:0_0_25px_rgba(0,255,224,0.3),0_0_15px_rgba(184,161,255,0.3)]">
+                <span className="font-script text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal bg-gradient-to-r from-[#00ffe0] to-[#b8a1ff] bg-clip-text text-transparent drop-shadow-lg [text-shadow:0_0_25px_rgba(0,255,224,0.3),0_0_15px_rgba(184,161,255,0.3)] tracking-wide leading-[0.9]">
                   clarity,
                 </span>
               </motion.div>
@@ -378,7 +378,7 @@ export default function Home() {
                 animate={{ y: 0 }}
                 transition={{ duration: 1.2, delay: 1.2, ease: "easeOut" }}
               >
-                <span className="font-playfair text-4xl sm:text-5xl md:text-5xl lg:text-7xl font-bold text-[#0f0f0f]">
+                <span className="font-script text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal text-[#0f0f0f] tracking-wide leading-[0.9]">
                   verse, and insight
                 </span>
                 <motion.span
@@ -392,7 +392,7 @@ export default function Home() {
 
           {/* Subtext with elegant serif */}
           <motion.p 
-            className="font-playfair italic text-lg sm:text-xl lg:text-2xl text-[#0f0f0f]/80 mb-6 sm:mb-12 max-w-3xl mx-auto leading-relaxed tracking-wide"
+            className="font-sans text-lg sm:text-xl lg:text-2xl text-[#0f0f0f]/60 mb-6 sm:mb-12 max-w-3xl mx-auto leading-relaxed tracking-normal font-normal"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.6 }}
@@ -444,7 +444,7 @@ export default function Home() {
           viewport={{ once: true }}
           transition={{ duration: 1 }}
         >
-          <h2 className="text-4xl lg:text-5xl font-playfair font-semibold text-[#0f0f0f] mb-8 drop-shadow-sm">
+          <h2 className="text-4xl lg:text-5xl font-script font-normal text-[#0f0f0f] mb-8 drop-shadow-sm tracking-wide">
             Explain like you're human
           </h2>
           <p className="text-lg text-[#0f0f0f]/75 font-playfair italic tracking-wide max-w-2xl mx-auto">
@@ -498,11 +498,11 @@ export default function Home() {
                 boxShadow: "0 10px 30px -10px rgba(0,0,0,0.1)"
               }}
             >
-              <div className="text-2xl mb-6 opacity-80 font-playfair">{mode.symbol}</div>
-              <h3 className="text-xl font-playfair font-semibold text-[#0f0f0f] mb-4">
+              <div className="text-2xl mb-6 opacity-80 font-display">{mode.symbol}</div>
+              <h3 className="text-xl font-display font-medium text-[#0f0f0f] mb-4">
                 {mode.title}
               </h3>
-              <p className="text-sm text-[#0f0f0f]/75 font-playfair italic leading-relaxed tracking-wide">
+              <p className="text-sm text-[#0f0f0f]/75 font-sans leading-relaxed tracking-normal">
                 {mode.description}
               </p>
             </motion.div>
@@ -522,7 +522,7 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ duration: 1 }}
           >
-            <h2 className="text-4xl lg:text-5xl font-playfair font-semibold text-[#0f0f0f] mb-6 drop-shadow-sm">
+            <h2 className="text-4xl lg:text-5xl font-script font-normal text-[#0f0f0f] mb-6 drop-shadow-sm tracking-wide">
               Read contracts with feeling
             </h2>
             <p className="text-lg text-[#0f0f0f]/75 font-playfair italic tracking-wide max-w-2xl mx-auto">
@@ -630,7 +630,7 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ duration: 1 }}
           >
-            <h2 className="text-4xl lg:text-5xl font-playfair font-semibold text-[#0f0f0f] mb-6 drop-shadow-sm">
+            <h2 className="text-4xl lg:text-5xl font-script font-normal text-[#0f0f0f] mb-6 drop-shadow-sm tracking-wide">
               From PDF to Poem
             </h2>
             <p className="text-lg text-[#0f0f0f]/75 font-playfair italic tracking-wide max-w-2xl mx-auto">
@@ -764,7 +764,7 @@ export default function Home() {
                     transition={{ duration: 1, delay: index * 0.3 }}
                   >
                     <motion.span
-                      className="inline-block font-playfair text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#0f0f0f] leading-snug sm:leading-normal"
+                      className="inline-block font-script text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal text-[#0f0f0f] leading-snug sm:leading-normal tracking-wide"
                       initial={{ y: 60 }}
                       whileInView={{ y: 0 }}
                       viewport={{ once: true }}
@@ -793,7 +793,7 @@ export default function Home() {
                     viewport={{ once: true }}
                     transition={{ duration: 1.2, delay: 0.9, ease: "easeOut" }}
                   >
-                    <span className="font-playfair text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-[#00ffe0] to-[#b8a1ff] bg-clip-text text-transparent leading-tight">
+                    <span className="font-script text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal bg-gradient-to-r from-[#00ffe0] to-[#b8a1ff] bg-clip-text text-transparent leading-tight tracking-wide">
                       Now, speak it better.
                     </span>
                   </motion.div>
