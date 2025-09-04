@@ -17,7 +17,7 @@ Versa is a frontend-first SaaS platform for intelligent document parsing and tra
 ## System Architecture
 The system is structured into four layers: Client, API, Processing Core, and Persistence. This separation provides clarity of responsibility and supports future scalability.
 
-![System Architecture](./path-to-your-architecture-diagram.png)
+![System Architecture](https://drive.google.com/uc?id=1UDwmaFDc5aWQW-l5TZzFnaF2n_cUExod)
 
 ---
 
